@@ -1,3 +1,8 @@
 @echo off
 cls
-php -S localhost:80 -t dist router.php
+IF [%1] == [] (
+    SET folder="dist"
+) ELSE (
+    SET folder="release"
+)
+php -S localhost:80 -t %folder% router.php

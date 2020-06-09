@@ -1,7 +1,13 @@
-#![recursion_limit = "1024"]
+#![recursion_limit = "512"]
 
 #[macro_use]
 extern crate cfg_if;
+
+mod routes;
+mod app;
+mod pages;
+mod todo;
+mod todo_model;
 
 extern crate wasm_bindgen;
 extern crate web_sys;
@@ -9,8 +15,17 @@ extern crate yew;
 extern crate yew_router;
 
 use wasm_bindgen::prelude::*;
+// use js_sys::*;
 
-mod todo;
+macro_rules! console_log {
+    ($($t:tt)*) => (log(&format_args!($($t)*).to_string()))
+}
+
+#[wasm_bindgen]
+extern "C" {
+    #[wasm_bindgen(js_namespace = console)]
+    fn log(s: &str);
+}
 
 cfg_if! {
     // When the `console_error_panic_hook` feature is enabled, we can call the
@@ -35,37 +50,36 @@ cfg_if! {
 }
 
 #[wasm_bindgen(start)]
-pub fn main(){
+pub fn main() {
     set_panic_hook();
-    yew::start_app::<todo::TodoModel>();
+    console_log!("SISN Application");
 }
 
-// #[wasm_bindgen]
-// pub fn main(){
+pub fn get_element(selector: &str) -> web_sys::Element {
+    let document = yew::utils::document();
+    document.query_selector(selector).unwrap().unwrap()
+}
 
-//     // YEW BEGIN
-//     yew::initialize();
-//     let _yew_document = yew::utils::document();
-//     // let yew_mount_point = yew_document.query_selector("#todo-app").unwrap().unwrap();
-//     // let yew_mount_point: web_sys::Element = yew_document.query_selector("#todo-app");
-    
-//     // YEW END
+/// A função `mount_at` deve receber o seletor de onde vai ser montado o componente
+///
+/// # Mount At
+///
+/// ```
+/// <script>
+///     mount_at("#app");
+/// </script>
+/// ```
+#[wasm_bindgen]
+pub fn mount_at(selector: &str) {
+    let _document = yew::utils::document();
+    // let mount_point = document.query_selector(selector).unwrap().unwrap();
+    let mount_point = get_element(selector);
+    // let window = yew::utils::document();
+    log("Second Step to Debug");
+    yew::App::<app::App>::new().mount(mount_point);
+}
 
-
-//     // Use `web_sys`'s global `window` function to get a handle on the global
-//     // window object.
-//     let window = web_sys::window().unwrap();
-//     let document = window.document().unwrap();
-//     let body = document.body().unwrap();
-
-//     // Manufacture the element we're gonna append
-//     let val = document.create_element("div").unwrap();
-//     val.set_inner_html("WASM Loaded!");
-//     body.append_child(&val)?;
-
-//     // App::<todo::TodoModel>::new().mount(val);
-//     // App::<todo::TodoModel>::new().mount_to_body();
-//     yew::start_app::<todo::TodoModel>();
-
-//     // Ok(())
-// }
+#[wasm_bindgen] /*-> Result<(), JsValue>*/
+pub fn mount_here(selector: &str){
+    log(selector);
+}
