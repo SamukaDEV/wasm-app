@@ -8,6 +8,7 @@ mod app;
 mod pages;
 mod todo;
 mod todo_model;
+mod components;
 
 extern crate wasm_bindgen;
 extern crate web_sys;
@@ -15,8 +16,8 @@ extern crate yew;
 extern crate yew_router;
 
 use wasm_bindgen::prelude::*;
-// use js_sys::*;
 
+#[allow(unused_macros)]
 macro_rules! console_log {
     ($($t:tt)*) => (log(&format_args!($($t)*).to_string()))
 }

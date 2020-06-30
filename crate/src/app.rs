@@ -4,6 +4,7 @@ use crate::pages::{About, Home};
 use yew::prelude::*;
 use yew_router::{prelude::*, switch::Permissive};
 use crate::routes::AppRouter;
+use crate::components::NavBar;
 
 pub struct App {
     _link: ComponentLink<Self>,
@@ -38,7 +39,8 @@ impl Component for App {
                 //         </ul>
                 //     </div>
                 // </nav>
-                <div class="container">
+                <div>
+                    <NavBar/>
                     <Router<AppRouter, ()>
                         render = Router::render(|switch: AppRouter | {
                             match switch {
@@ -53,9 +55,9 @@ impl Component for App {
                             }
                         })
                     />
-                    <hr/>
-                    <RouterAnchor<AppRouter> route=AppRouter::RootPath>{"Home"}</RouterAnchor<AppRouter>>
-                    <RouterAnchor<AppRouter> route=AppRouter::AboutPath>{"About"}</RouterAnchor<AppRouter>>
+                    // <hr/>
+                    // <RouterAnchor<AppRouter> route=AppRouter::RootPath>{"Home"}</RouterAnchor<AppRouter>>
+                    // <RouterAnchor<AppRouter> route=AppRouter::AboutPath>{"About"}</RouterAnchor<AppRouter>>
                 </div>
             </div>
         }
